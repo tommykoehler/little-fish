@@ -1,0 +1,24 @@
+// Proportional sizing from the 1440px Figma frame.
+// Write Figma px values: fluid(64, 40px) is 64px at a 1440px viewport, scales
+// with the viewport, stops growing at 1920px, and never drops below 40px.
+
+@use 'sass:math';
+
+$design-width: 1440;
+$max-width: 1920;
+
+@function -round($n) {
+  @return math.div(math.round($n * 10000), 10000);
+}
+
+// $px: the value in the Figma design (unitless or px)
+// $min: smallest it may get (defaults to half the Figma value)
+@function fluid($px, $min: null) {
+  $px: math.div($px, $px * 0 + 1); // strip unit
+  @if $min == null {
+    $min: -round($px * 0.5) * 1px;
+  }
+  $vw: -round(math.div($px, $design-width) * 100) * 1vw;
+  $max: -round(math.div($px * $max-width, $design-width)) * 1px;
+  @return clamp(#{$min}, #{$vw}, #{$max});
+}

@@ -1,0 +1,81 @@
+// Text styles from Figma. Sizes scale with the viewport (see _fluid.scss) and stop
+// at the floor on small screens; line heights are ratios so they follow the size.
+// Letter spacing is converted from % to em.
+
+@use 'fluid' as *;
+
+// heading/h5: Libre Caslon Text SemiBold 14/14, 25%
+@mixin heading-h5 {
+  font-family: var(--font-serif);
+  font-size: fluid(14, 12px);
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+}
+
+// body/small: Jost Light 16/24, 2%
+@mixin body-small {
+  font-family: var(--font-sans);
+  font-size: fluid(16, 15px);
+  font-weight: 300;
+  line-height: 1.5;
+  letter-spacing: 0.02em;
+}
+
+// body/micro: Jost Regular 10/10, 15%
+@mixin body-micro {
+  font-family: var(--font-sans);
+  font-size: fluid(10, 10px);
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+// Button label: Libre Caslon Text Medium 12/16, 15%
+@mixin button-label {
+  font-family: var(--font-serif);
+  font-size: fluid(12, 11px);
+  font-weight: 500;
+  line-height: 1.3333;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+// heading/display: Libre Caslon Text SemiBold 64/64, -1%
+@mixin heading-display {
+  font-family: var(--font-serif);
+  font-size: fluid(64, 40px);
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -0.01em;
+}
+
+// heading/h3: Libre Caslon Text Medium 34/40.8, -2%
+@mixin heading-h3 {
+  font-family: var(--font-serif);
+  font-size: fluid(34, 26px);
+  font-weight: 500;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+
+// heading/h6: Jost Regular 14/14, 10%
+@mixin heading-h6 {
+  font-family: var(--font-sans);
+  font-size: fluid(14, 12px);
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+// body/large: Jost Light 20/30, 2%
+@mixin body-large {
+  font-family: var(--font-sans);
+  font-size: fluid(20, 17px);
+  font-weight: 300;
+  line-height: 1.5;
+  letter-spacing: 0.02em;
+}

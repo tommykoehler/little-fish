@@ -1,0 +1,85 @@
+// Cork illustration: the cork drops in, the splash appears, then the cork bobs.
+// JS adds .is-ready (hidden start state) and .is-visible (play) to .about__art.
+
+$drop-duration: 1.1s;
+
+.cork-art {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+// Tilt around the waterline, not the SVG's top-left corner
+.cork-art__cork {
+  transform-box: fill-box;
+  transform-origin: 50% 61%;
+}
+
+.cork-art__splash {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.is-ready:not(.is-visible) {
+  .cork-art__cork,
+  .cork-art__splash {
+    opacity: 0;
+  }
+}
+
+.is-ready.is-visible {
+  .cork-art__cork {
+    animation:
+      cork-drop $drop-duration cubic-bezier(0.55, 0, 0.45, 1) both,
+      cork-bob 4s ease-in-out $drop-duration infinite;
+  }
+
+  .cork-art__splash {
+    animation: splash-in 0.7s cubic-bezier(0.2, 0.7, 0.3, 1) 0.75s both;
+  }
+}
+
+@keyframes cork-drop {
+  0% {
+    opacity: 0;
+    transform: translateY(-160px);
+  }
+
+  30% {
+    opacity: 1;
+  }
+
+  // Hits the water and dips below its resting point
+  70% {
+    transform: translateY(10px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes cork-bob {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0);
+  }
+
+  50% {
+    transform: translateY(-10px) rotate(-2deg);
+  }
+}
+
+@keyframes splash-in {
+  from {
+    opacity: 0;
+    transform: scaleX(0.6);
+  }
+
+  to {
+    opacity: 1;
+    transform: scaleX(1);
+  }
+}

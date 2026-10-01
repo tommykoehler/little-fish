@@ -1,0 +1,156 @@
+// Colors — generated from the Figma file "Little Fish" variables.
+// https://www.figma.com/design/jqW5hO4dNdcM6oc4yGeQv4/Little-Fish
+//
+// Primitives: raw palette values (Figma collection "Primatives").
+// Semantics:  role-based colors per theme (Figma collection "Semantics",
+//             modes Light / Dark / Tan). Use these in components.
+
+@use 'sass:list';
+@use 'sass:map';
+
+$primitives: (
+  'cream': (
+    10: #fefdfc,
+    20: #fdfcfa,
+    30: #fdfbf8,
+    40: #fcfaf6,
+    50: #fbf8f3,
+    base: #faf7f1,
+    60: #d0cec9,
+    70: #a7a5a1,
+    80: #7d7c79,
+    90: #535250,
+    100: #323130,
+  ),
+  'butter': (
+    10: #fbfaf5,
+    20: #f8f6ef,
+    30: #f5f2e7,
+    40: #f2eddf,
+    50: #eee9d7,
+    base: #ebe4cf,
+    60: #c4bead,
+    70: #9d988a,
+    80: #767268,
+    90: #4e4c45,
+    100: #2f2e29,
+  ),
+  'olive': (
+    10: #e2e4df,
+    20: #cfd1ca,
+    30: #b8bbaf,
+    40: #a0a494,
+    50: #888d7a,
+    base: #70765f,
+    60: #5d624f,
+    70: #4b4f3f,
+    80: #383b30,
+    90: #252720,
+    100: #161813,
+  ),
+  'french-blue': (
+    10: #eff2f4,
+    20: #e5e9ed,
+    30: #d8dee4,
+    40: #cbd2da,
+    50: #bec7d1,
+    base: #b1bcc8,
+    60: #949da7,
+    70: #767d85,
+    80: #595e64,
+    90: #3b3f43,
+    100: #232628,
+  ),
+  'marine': (
+    10: #dbdfe6,
+    20: #c2cad5,
+    30: #a4b0c0,
+    40: #8696ab,
+    50: #677b96,
+    base: #496181,
+    60: #3d516c,
+    70: #314156,
+    80: #253141,
+    90: #18202b,
+    100: #0f131a,
+  ),
+  'mocha': (
+    10: #dcdad7,
+    20: #c5c1bc,
+    30: #a8a29b,
+    40: #8a837a,
+    50: #6d6458,
+    base: #504537,
+    60: #433a2e,
+    70: #352e25,
+    80: #28231c,
+    90: #1b1712,
+    100: #100e0b,
+  ),
+);
+
+// Each semantic role points at a (palette, step) primitive.
+$themes: (
+  'light': (
+    surface-background: ('marine', 10),
+    surface-card: ('marine', 10),
+    surface-icon: ('marine', 100),
+    surface-stroke: ('marine', 100),
+    text-body: ('marine', 100),
+    text-title: ('marine', 70),
+    text-subtitle: ('marine', base),
+  ),
+  'dark': (
+    surface-background: ('marine', 70),
+    surface-card: ('marine', 80),
+    surface-icon: ('marine', 10),
+    surface-stroke: ('marine', 10),
+    text-body: ('butter', 10),
+    text-title: ('butter', 10),
+    text-subtitle: ('marine', 50),
+  ),
+  'tan': (
+    surface-background: ('butter', 10),
+    surface-card: ('butter', 30),
+    surface-icon: ('butter', 100),
+    surface-stroke: ('butter', 100),
+    text-body: ('butter', 100),
+    text-title: ('butter', 90),
+    text-subtitle: ('butter', 90),
+  ),
+);
+
+$default-theme: 'light';
+
+// Raw primitive value, for Sass-time use: primitive('marine', base)
+@function primitive($palette, $step) {
+  @return map.get($primitives, $palette, $step);
+}
+
+// Emits every primitive as a CSS custom property: --color-marine-base
+@mixin primitive-vars {
+  @each $palette, $steps in $primitives {
+    @each $step, $value in $steps {
+      --color-#{$palette}-#{$step}: #{$value};
+    }
+  }
+}
+
+// Emits a theme's semantic roles as CSS custom properties: --text-title
+@mixin theme-vars($theme) {
+  @each $role, $ref in map.get($themes, $theme) {
+    --#{$role}: var(--color-#{list.nth($ref, 1)}-#{list.nth($ref, 2)});
+  }
+}
+
+:root {
+  @include primitive-vars;
+  @include theme-vars($default-theme);
+}
+
+// Switch themes with <html data-theme="dark"> (or light / tan)
+@each $theme, $roles in $themes {
+  [data-theme='#{$theme}'] {
+    @include theme-vars($theme);
+  }
+}

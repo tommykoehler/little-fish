@@ -1,0 +1,51 @@
+@use 'typography';
+
+// Figma component "Button" (Color=Blue / White)
+.button {
+  position: relative;
+  isolation: isolate;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 24px;
+  border: 0;
+  border-radius: 1px;
+  background: var(--button-fill);
+  color: var(--button-text);
+  text-decoration: none;
+  cursor: pointer;
+  @include typography.button-label;
+
+  // Offset outline behind the button; slides under it on hover
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border: 1px solid var(--button-fill);
+    border-radius: inherit;
+    transform: translate(4px, 4px);
+    transition: transform 0.15s ease;
+  }
+
+  &:hover::before,
+  &:active::before {
+    transform: translate(0, 0);
+  }
+
+  &:focus-visible {
+    outline: 1px solid var(--button-fill);
+    outline-offset: 8px;
+  }
+}
+
+.button--white {
+  --button-fill: var(--color-marine-10);
+  --button-text: var(--color-marine-60);
+}
+
+.button--blue {
+  --button-fill: var(--color-marine-60);
+  --button-text: var(--color-marine-10);
+}

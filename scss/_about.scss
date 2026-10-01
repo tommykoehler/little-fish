@@ -1,0 +1,72 @@
+@use 'fluid' as *;
+@use 'typography';
+
+.about {
+  position: relative;
+  display: flex;
+  justify-content: flex-end;
+  padding: fluid(160) var(--page-gutter);
+  overflow: clip;
+
+  // Fades the top of the fishing line into the hero
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1;
+    height: fluid(185);
+    background: linear-gradient(to bottom, var(--color-butter-10), rgb(251 250 245 / 0));
+    pointer-events: none;
+  }
+}
+
+// Cork art (see _cork-art.scss), positioned as in the Figma "Art" frame
+.about__art {
+  position: absolute;
+  top: 1px;
+  left: fluid(109);
+  width: fluid(399);
+  // Stop growing at 600px tall; aspect-ratio keeps it proportional
+  max-width: calc(600px * 399 / 621.3);
+  aspect-ratio: 399 / 621.3;
+}
+
+.about__content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: fluid(40, 24px);
+  width: fluid(600);
+  max-width: 100%;
+}
+
+.about__body {
+  display: flex;
+  flex-direction: column;
+  gap: fluid(20, 16px);
+  color: var(--color-marine-90);
+  @include typography.body-large;
+}
+
+// Art and text scale together, so they only stack on phones
+@media (max-width: 48rem) {
+  .about {
+    flex-direction: column;
+    align-items: center;
+    gap: 48px;
+  }
+
+  .about__art {
+    position: relative;
+    top: auto;
+    left: auto;
+    width: 200px;
+  }
+
+  .about__content {
+    width: 100%;
+  }
+}

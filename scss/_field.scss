@@ -1,0 +1,49 @@
+@use 'fluid' as *;
+@use 'typography';
+
+// Figma component "Input"
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+}
+
+.field__label {
+  color: var(--text-body);
+  @include typography.body-micro;
+}
+
+.field__input {
+  width: 100%;
+  padding: 12px;
+  border: 0;
+  border-bottom: 0.5px solid var(--surface-stroke);
+  border-radius: 0;
+  background: transparent;
+  color: var(--text-body);
+  @include typography.body-small;
+  // iOS zooms the page in on inputs smaller than 16px
+  font-size: fluid(16, 16px);
+
+  &::placeholder {
+    color: var(--text-subtitle);
+    opacity: 1;
+  }
+
+  // Not in Figma: needed so keyboard users can see where they are
+  &:focus-visible {
+    outline: 1px solid var(--surface-stroke);
+    outline-offset: 2px;
+  }
+
+  &[aria-invalid='true'] {
+    border-bottom-color: var(--color-error);
+  }
+}
+
+// Message box: Figma uses 80px bottom padding to make it taller
+.field__input--multiline {
+  min-height: 116px;
+  resize: none;
+}

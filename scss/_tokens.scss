@@ -1,0 +1,14 @@
+// Non-color design tokens. Text styles live in _typography.scss.
+:root {
+  --font-sans: 'Jost', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-serif: 'Libre Caslon Text', Georgia, 'Times New Roman', serif;
+
+  --text-base: 1rem;
+  --leading-normal: 1.5;
+
+  // Content always sits inside a 90vw column
+  --page-gutter: 5vw;
+
+  // Not defined in Figma yet
+  --color-error: #c62828;
+}

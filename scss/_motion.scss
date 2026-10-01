@@ -1,0 +1,28 @@
+// Scroll motion. JS (js/main.js) sets the classes and custom properties;
+// everything here is skipped for visitors who prefer reduced motion.
+
+// Rise in: elements with [data-reveal] fade up once they scroll into view.
+// Stagger with style="--reveal-delay: 0.1s". Only hidden when JS runs (.js on <html>).
+@media (prefers-reduced-motion: no-preference) {
+  .js [data-reveal] {
+    transition:
+      opacity 0.9s ease var(--reveal-delay, 0s),
+      transform 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) var(--reveal-delay, 0s);
+  }
+
+  .js [data-reveal]:not(.is-revealed) {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+}
+
+// Hero parallax. Uses `translate` (not `transform`) so it stacks with the
+// photo's centering and the headline's rise-in.
+.hero__photo {
+  translate: 0 var(--parallax-photo, 0px);
+  will-change: translate;
+}
+
+.hero__title {
+  translate: 0 var(--parallax-title, 0px);
+}

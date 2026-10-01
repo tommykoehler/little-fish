@@ -1,0 +1,30 @@
+@use 'fluid' as *;
+@use 'typography';
+
+// Figma component "Eyebrow" (Orientation=Horizontal)
+.eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--text-body);
+  opacity: 0.5;
+  @include typography.heading-h6;
+
+  &::before {
+    content: '';
+    width: 24px;
+    border-top: 1px solid currentColor;
+  }
+}
+
+// Figma component "Section Heading" (Kind=Left)
+.section-heading {
+  display: flex;
+  flex-direction: column;
+  gap: fluid(40, 24px);
+}
+
+.section-heading__title {
+  color: var(--text-subtitle);
+  @include typography.heading-h3;
+}

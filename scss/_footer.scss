@@ -1,0 +1,130 @@
+@use 'fluid' as *;
+@use 'typography';
+
+// Figma component "Footer" (uses the Dark theme via data-theme="dark")
+.site-footer {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: fluid(64, 48px);
+  margin-top: fluid(40, 24px);
+  padding: fluid(120) var(--page-gutter);
+  background: var(--surface-background);
+  color: var(--text-body);
+
+  // Figma "Top SVG": 40px wave above the footer, in the footer's color
+  &::before {
+    content: '';
+    position: absolute;
+    bottom: 100%;
+    left: 0;
+    right: 0;
+    height: fluid(40, 24px);
+    background: var(--surface-background);
+    mask: url('../assets/images/footer-wave.svg') center / 100% 100% no-repeat;
+    -webkit-mask: url('../assets/images/footer-wave.svg') center / 100% 100% no-repeat;
+  }
+}
+
+.site-footer__intro {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: fluid(80);
+  width: fluid(282, 240px);
+  flex-shrink: 0;
+}
+
+// Wordmark and fish overlap slightly, as in Figma
+.site-footer__logo {
+  display: grid;
+  width: max-content;
+
+  img {
+    grid-area: 1 / 1;
+  }
+
+  // Figma sizes: wordmark 158×57, fish 152×43, fish starts 52px down
+  img:first-child {
+    width: fluid(158, 130px);
+    height: auto;
+  }
+
+  img + img {
+    width: fluid(152, 125px);
+    height: auto;
+    margin-top: fluid(52, 43px);
+  }
+}
+
+.site-footer__text {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.site-footer__tagline {
+  color: var(--text-subtitle);
+  @include typography.heading-h5;
+}
+
+.site-footer__blurb {
+  @include typography.body-small;
+}
+
+.contact-form {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: fluid(24, 20px);
+  flex: 1;
+  max-width: fluid(400, 320px);
+}
+
+.contact-form__fields {
+  display: flex;
+  flex-direction: column;
+  gap: fluid(40, 24px);
+  width: 100%;
+}
+
+.contact-form__row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: fluid(24, 16px);
+}
+
+.contact-form__status {
+  color: var(--text-subtitle);
+  @include typography.body-small;
+
+  &:empty {
+    display: none;
+  }
+}
+
+@media (max-width: 48rem) {
+  .site-footer {
+    flex-direction: column;
+  }
+
+  .site-footer__intro {
+    width: auto;
+    max-width: 282px;
+    gap: 48px;
+  }
+
+  .contact-form {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+@media (max-width: 30rem) {
+  .contact-form__row {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+}
