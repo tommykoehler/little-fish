@@ -1,18 +1,69 @@
 // Scroll motion. JS (js/main.js) sets the classes and custom properties;
 // everything here is skipped for visitors who prefer reduced motion.
 
-// Rise in: elements with [data-reveal] fade up once they scroll into view.
-// Stagger with style="--reveal-delay: 0.1s". Only hidden when JS runs (.js on <html>).
+$ease-out: cubic-bezier(0.2, 0.7, 0.2, 1);
+
 @media (prefers-reduced-motion: no-preference) {
+  // Rise in: elements with [data-reveal] fade up once they scroll into view.
+  // Stagger with style="--reveal-delay: 0.1s". Only hidden when JS runs (.js on <html>).
   .js [data-reveal] {
     transition:
       opacity 0.9s ease var(--reveal-delay, 0s),
-      transform 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) var(--reveal-delay, 0s);
+      transform 1.1s $ease-out var(--reveal-delay, 0s);
   }
 
   .js [data-reveal]:not(.is-revealed) {
     opacity: 0;
-    transform: translateY(24px);
+    transform: translateY(var(--reveal-distance, 24px));
+  }
+
+  // Headline lines travel a little further for a stronger entrance
+  .hero__line {
+    --reveal-distance: 40px;
+  }
+
+  // Eyebrow rule draws in from the left after its label appears
+  .js .eyebrow[data-reveal]::before {
+    transform-origin: left;
+    transition: transform 0.8s $ease-out calc(var(--reveal-delay, 0s) + 0.3s);
+  }
+
+  .js .eyebrow[data-reveal]:not(.is-revealed)::before {
+    transform: scaleX(0);
+  }
+
+  // Page load: the photo settles from a slight zoom while the header drops in.
+  // `scale` (not `transform`) leaves the photo's centering transform alone.
+  .hero__photo {
+    animation: hero-photo-in 2.2s $ease-out both;
+  }
+
+  .site-header {
+    animation: header-in 1s $ease-out 0.8s both;
+  }
+}
+
+@keyframes hero-photo-in {
+  from {
+    opacity: 0;
+    scale: 1.08;
+  }
+
+  to {
+    opacity: 1;
+    scale: 1;
+  }
+}
+
+@keyframes header-in {
+  from {
+    opacity: 0;
+    transform: translateY(-16px);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
   }
 }
 
@@ -25,4 +76,22 @@
 
 .hero__title {
   translate: 0 var(--parallax-title, 0px);
+}
+
+// Smooth scrolling (Lenis, js/vendor/lenis.min.js). Lenis adds these classes to <html>.
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
 }

@@ -41,6 +41,11 @@ a {
   color: inherit;
 }
 
+// Sections focused by in-page links (js/main.js) don't need a ring around the whole block
+[tabindex='-1']:focus {
+  outline: none;
+}
+
 .visually-hidden {
   position: absolute;
   width: 1px;

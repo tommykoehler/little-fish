@@ -33,12 +33,13 @@
   text-transform: uppercase;
 }
 
-// Button label: Libre Caslon Text Medium 12/16, 15%
+// Button label: Libre Caslon Text Medium 12/16, 15%. Fixed size (doesn't scale)
+// so buttons stay the Figma size on every screen.
 @mixin button-label {
   font-family: var(--font-serif);
-  font-size: fluid(12, 11px);
+  font-size: 12px;
   font-weight: 500;
-  line-height: 1.3333;
+  line-height: 16px;
   letter-spacing: 0.15em;
   text-transform: uppercase;
 }

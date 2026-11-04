@@ -2,8 +2,13 @@
 const contactForm = document.getElementById('contact-form');
 const contactStatus = document.getElementById('contact-status');
 
-contactForm.addEventListener('submit', (event) => {
+const contactButton = contactForm.querySelector('[type="submit"]');
+
+// Sends to Formspree (the form's action) in the background so visitors stay on the page.
+// Without JS the form still posts there directly.
+contactForm.addEventListener('submit', async (event) => {
   event.preventDefault();
+  if (contactButton.disabled) return;
 
   const invalid = [...contactForm.elements].filter((el) => el.willValidate && !el.checkValidity());
   contactForm.querySelectorAll('[aria-invalid]').forEach((el) => el.removeAttribute('aria-invalid'));
@@ -15,15 +20,62 @@ contactForm.addEventListener('submit', (event) => {
     return;
   }
 
-  // TODO: send the form data to a form service (Formspree, Netlify Forms, etc.)
-  contactStatus.textContent = "Thanks! We'll be in touch soon.";
-  contactForm.reset();
+  contactButton.disabled = true;
+  contactStatus.textContent = 'Sending…';
+
+  try {
+    const response = await fetch(contactForm.action, {
+      method: 'POST',
+      body: new FormData(contactForm),
+      headers: { Accept: 'application/json' },
+    });
+    if (!response.ok) throw new Error(`Formspree responded ${response.status}`);
+
+    contactStatus.textContent = "Thanks! We'll be in touch soon.";
+    contactForm.reset();
+  } catch (error) {
+    console.error(error);
+    contactStatus.textContent = 'Sorry, your message didn’t send. Please try again in a moment.';
+  } finally {
+    contactButton.disabled = false;
+  }
 });
 
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const canObserve = 'IntersectionObserver' in window;
 
-// Runs callback once, the first time el is at least `threshold` visible
+// Smooth, eased wheel/trackpad scrolling (js/vendor/lenis.min.js).
+// Touch devices keep native scrolling; reduced-motion visitors get plain scrolling.
+let lenis = null;
+
+if (!reduceMotion && window.Lenis) {
+  lenis = new Lenis({ lerp: 0.09 });
+
+  const raf = (time) => {
+    lenis.raf(time);
+    requestAnimationFrame(raf);
+  };
+  requestAnimationFrame(raf);
+}
+
+// In-page links (e.g. Contact) glide to their section with Lenis
+document.querySelectorAll('a[href^="#"]').forEach((link) => {
+  link.addEventListener('click', (event) => {
+    const target = document.querySelector(link.hash);
+    if (!lenis || !target) return; // Without Lenis, CSS scroll-behavior handles it
+
+    event.preventDefault();
+    lenis.scrollTo(target, { duration: 1.6 });
+    history.pushState(null, '', link.hash);
+
+    // Move keyboard focus to the section, as a normal anchor jump would
+    if (!target.hasAttribute('tabindex')) target.setAttribute('tabindex', '-1');
+    target.focus({ preventScroll: true });
+  });
+});
+
+// Runs callback once, the first time el is at least `threshold` visible.
+// The bottom margin waits until el is a little way up the screen.
 function onceVisible(el, threshold, callback) {
   const observer = new IntersectionObserver(
     (entries) => {
@@ -32,7 +84,7 @@ function onceVisible(el, threshold, callback) {
         observer.disconnect();
       }
     },
-    { threshold }
+    { threshold, rootMargin: '0px 0px -8% 0px' }
   );
   observer.observe(el);
 }
@@ -50,6 +102,21 @@ const corkArt = document.querySelector('.about__art');
 if (corkArt && !reduceMotion && canObserve) {
   corkArt.classList.add('is-ready');
   onceVisible(corkArt, 0.3, () => corkArt.classList.add('is-visible'));
+}
+
+// Footer wave: hold the Figma shape for reduced motion; otherwise only animate while on screen
+const footerWave = document.querySelector('.site-footer__wave');
+
+if (footerWave) {
+  if (reduceMotion) {
+    footerWave.pauseAnimations();
+    footerWave.setCurrentTime(0);
+  } else if (canObserve) {
+    new IntersectionObserver((entries) => {
+      if (entries[entries.length - 1].isIntersecting) footerWave.unpauseAnimations();
+      else footerWave.pauseAnimations();
+    }).observe(footerWave);
+  }
 }
 
 // Hero parallax: the photo scrolls slower than the page, the headline slightly faster

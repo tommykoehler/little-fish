@@ -12,19 +12,19 @@
   padding: fluid(120) var(--page-gutter);
   background: var(--surface-background);
   color: var(--text-body);
+}
 
-  // Figma "Top SVG": 40px wave above the footer, in the footer's color
-  &::before {
-    content: '';
-    position: absolute;
-    bottom: 100%;
-    left: 0;
-    right: 0;
-    height: fluid(40, 24px);
-    background: var(--surface-background);
-    mask: url('../assets/images/footer-wave.svg') center / 100% 100% no-repeat;
-    -webkit-mask: url('../assets/images/footer-wave.svg') center / 100% 100% no-repeat;
-  }
+// Figma "Top SVG": 40px wave above the footer, in the footer's color.
+// Inline so its SMIL animation can be paused from JS (js/main.js).
+.site-footer__wave {
+  position: absolute;
+  // Overlap by 1px so no hairline shows between wave and footer
+  bottom: calc(100% - 1px);
+  left: 0;
+  width: 100%;
+  height: fluid(40, 24px);
+  overflow: visible;
+  fill: var(--surface-background);
 }
 
 .site-footer__intro {

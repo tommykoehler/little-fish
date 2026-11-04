@@ -17,7 +17,8 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: fluid(40, 20px) var(--page-gutter);
+  // Slimmer than Figma's 40px so the bar takes less of the hero
+  padding: fluid(24, 16px) var(--page-gutter);
   border-bottom: 0.5px solid var(--color-cream-10);
   background: linear-gradient(to bottom, rgb(255 255 255 / 0.5), rgb(255 255 255 / 0));
   // Figma background blur radius 5 ≈ CSS blur 2.5px
@@ -29,7 +30,7 @@ body {
   display: block;
 
   img {
-    width: fluid(120, 90px);
+    width: fluid(100, 84px);
     height: auto;
   }
 }
@@ -83,10 +84,14 @@ $photo-ratio: math.div(2081, 1470);
 
   // Figma: Bold Italic on its own line (Google Fonts has no bold italic, so the browser emboldens the italic)
   em {
-    display: block;
     font-style: italic;
     font-weight: 700;
   }
+}
+
+// Each headline line rises in separately (see _motion.scss)
+.hero__line {
+  display: block;
 }
 
 @media (max-width: 48rem) {
@@ -97,5 +102,10 @@ $photo-ratio: math.div(2081, 1470);
     object-fit: cover;
     object-position: 58% 40%;
     transform: none;
+  }
+
+  // Sit the headline lower so it clears the glass on short phones
+  .hero__content {
+    padding-bottom: 40px;
   }
 }

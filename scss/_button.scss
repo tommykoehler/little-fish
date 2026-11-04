@@ -34,6 +34,12 @@
     transform: translate(0, 0);
   }
 
+  // While the contact form is sending
+  &:disabled {
+    opacity: 0.6;
+    cursor: progress;
+  }
+
   &:focus-visible {
     outline: 1px solid var(--button-fill);
     outline-offset: 8px;
